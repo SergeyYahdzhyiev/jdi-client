@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const HTMLPlugin = require('html-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
@@ -18,6 +20,10 @@ module.exports = {
         test: /\.tsx?$/,
         loader: 'ts-loader',
       },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
     ],
   },
   plugins: [
@@ -25,6 +31,10 @@ module.exports = {
       template: path.resolve(__dirname, 'public', 'index.html'),
       inject: 'body',
     }),
+    // new CopyWebpackPlugin({
+    //   patterns: ['public/*.json', 'public/*.ico', 'public/*.png', 'public/*.txt'],
+    // }),
+    new MiniCssExtractPlugin(),
   ],
   devServer: {
     compress: true,
