@@ -6,6 +6,6 @@ const Heading = styled.h1`
   color: red;
 `;
 
-export const App = () => {
+export const App: React.FC = () => {
   return <Heading>Hello Jdi!</Heading>;
 };
