@@ -1,11 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const Heading = styled.h1`
-  font-size: max(24px, 5vw);
-  color: red;
-`;
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Header, Footer } from './components';
 
 export const App: React.FC = () => {
-  return <Heading>Hello Jdi!</Heading>;
+  return (
+    <Router>
+      <Header />
+      <Footer />
+    </Router>
+  );
 };
