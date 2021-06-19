@@ -3,6 +3,7 @@ const path = require('path');
 const HTMLPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
@@ -48,6 +49,11 @@ module.exports = {
       patterns: ['public/*.json', 'public/*.ico', 'public/*.txt', 'public/assets/icons/*'],
     }),
     new MiniCssExtractPlugin(),
+    // new WorkboxPlugin.GenerateSW({
+    //   clientsClaim: true,
+    //   skipWaiting: true,
+    //   cleanupOutdatedCaches: true,
+    // }),
   ],
   devServer: {
     compress: true,
