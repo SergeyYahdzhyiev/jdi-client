@@ -5,11 +5,53 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <h2>
-        Header
-      </h2>
+      <header
+        class="sc-gKAaRy hxSnZq"
+      >
+        <h2
+          class="sc-iCoGMd bYgaBS"
+          role="logo"
+        >
+          <span
+            class="sc-fujyAs gGinEE"
+          >
+            J
+          </span>
+          ust
+          <span
+            class="sc-fujyAs gGinEE"
+          >
+            D
+          </span>
+          o
+          <span
+            class="sc-fujyAs gGinEE"
+          >
+            I
+          </span>
+          t
+        </h2>
+        <nav
+          class="sc-pNWdM irvinq"
+        >
+          <a
+            class="sc-jrsJWt ebkkKd"
+            href="/login"
+            role="nav-link"
+          >
+            Login
+          </a>
+          <a
+            class="sc-jrsJWt ebkkKd"
+            href="/register"
+            role="nav-link"
+          >
+            Register
+          </a>
+        </nav>
+      </header>
       <footer
-        class="sc-bdnxRM ilDEpU"
+        class="sc-bdnxRM kdtghO"
       >
         <div
           class="sc-gtsrHT cPlHGU"
@@ -160,11 +202,53 @@ Object {
     </div>
   </body>,
   "container": <div>
-    <h2>
-      Header
-    </h2>
+    <header
+      class="sc-gKAaRy hxSnZq"
+    >
+      <h2
+        class="sc-iCoGMd bYgaBS"
+        role="logo"
+      >
+        <span
+          class="sc-fujyAs gGinEE"
+        >
+          J
+        </span>
+        ust
+        <span
+          class="sc-fujyAs gGinEE"
+        >
+          D
+        </span>
+        o
+        <span
+          class="sc-fujyAs gGinEE"
+        >
+          I
+        </span>
+        t
+      </h2>
+      <nav
+        class="sc-pNWdM irvinq"
+      >
+        <a
+          class="sc-jrsJWt ebkkKd"
+          href="/login"
+          role="nav-link"
+        >
+          Login
+        </a>
+        <a
+          class="sc-jrsJWt ebkkKd"
+          href="/register"
+          role="nav-link"
+        >
+          Register
+        </a>
+      </nav>
+    </header>
     <footer
-      class="sc-bdnxRM ilDEpU"
+      class="sc-bdnxRM kdtghO"
     >
       <div
         class="sc-gtsrHT cPlHGU"

@@ -5,15 +5,99 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <h2>
-        Header
-      </h2>
+      <header
+        class="sc-bdnxRM ftlguK"
+      >
+        <h2
+          class="sc-gtsrHT dllWDj"
+          role="logo"
+        >
+          <span
+            class="sc-dlnjwi kQljqw"
+          >
+            J
+          </span>
+          ust
+          <span
+            class="sc-dlnjwi kQljqw"
+          >
+            D
+          </span>
+          o
+          <span
+            class="sc-dlnjwi kQljqw"
+          >
+            I
+          </span>
+          t
+        </h2>
+        <nav
+          class="sc-hKFxyN jOAcJI"
+        >
+          <a
+            class="sc-eCApnc eMOZJF"
+            href="/login"
+            role="nav-link"
+          >
+            Login
+          </a>
+          <a
+            class="sc-eCApnc eMOZJF"
+            href="/register"
+            role="nav-link"
+          >
+            Register
+          </a>
+        </nav>
+      </header>
     </div>
   </body>,
   "container": <div>
-    <h2>
-      Header
-    </h2>
+    <header
+      class="sc-bdnxRM ftlguK"
+    >
+      <h2
+        class="sc-gtsrHT dllWDj"
+        role="logo"
+      >
+        <span
+          class="sc-dlnjwi kQljqw"
+        >
+          J
+        </span>
+        ust
+        <span
+          class="sc-dlnjwi kQljqw"
+        >
+          D
+        </span>
+        o
+        <span
+          class="sc-dlnjwi kQljqw"
+        >
+          I
+        </span>
+        t
+      </h2>
+      <nav
+        class="sc-hKFxyN jOAcJI"
+      >
+        <a
+          class="sc-eCApnc eMOZJF"
+          href="/login"
+          role="nav-link"
+        >
+          Login
+        </a>
+        <a
+          class="sc-eCApnc eMOZJF"
+          href="/register"
+          role="nav-link"
+        >
+          Register
+        </a>
+      </nav>
+    </header>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
