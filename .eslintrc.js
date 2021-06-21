@@ -8,6 +8,7 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    '@typescript-eslint/no-var-requires': 'off',
   },
   settings: { react: { version: 'detect' } },
 };

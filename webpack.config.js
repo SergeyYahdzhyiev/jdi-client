@@ -38,6 +38,13 @@ module.exports = {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
+      {
+        test: /\.svg$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'public/icons/[name][ext]',
+        },
+      },
     ],
   },
   plugins: [
