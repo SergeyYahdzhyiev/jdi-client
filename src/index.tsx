@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { App } from './App';
+import { RootStore, StoreProvider } from './store';
 
 // if ('serviceWorker' in navigator) {
 //   window.addEventListener('load', () => {
@@ -17,4 +18,9 @@ import { App } from './App';
 //   });
 // }
 
-render(<App />, document.getElementById('root'));
+render(
+  <StoreProvider store={new RootStore()}>
+    <App />
+  </StoreProvider>,
+  document.getElementById('root'),
+);

@@ -1,6 +1,8 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { useStores } from '../hooks/stores.hook';
 
 const TopBar = styled.header`
   display: flex;
@@ -15,10 +17,12 @@ const TopBar = styled.header`
   border-bottom: 2px solid var(--clr-text-secondary);
   box-shadow: var(--box-shadow-primary);
 `;
-const LogoText = styled.h2`
+const LogoText = styled(NavLink)`
   font-size: max(32px, 3vw);
   margin: 0;
   font-weight: 500;
+  color: var(--text-color-primary);
+  text-decoration: none;
 `;
 const Colored = styled.span`
   color: var(--clr-text-highlight);
@@ -41,13 +45,22 @@ const NLink = styled(NavLink)`
     color: var(--clr-text-highlight);
   }
 `;
+const UserPanel = styled.div`
+  display: flex;
+  align-itemd: center;
+`;
 
-export const Header: React.FC = () => {
-  return (
-    <TopBar>
-      <LogoText role="logo">
-        <Colored>J</Colored>ust<Colored>D</Colored>o<Colored>I</Colored>t
-      </LogoText>
+export const Header: React.FC = observer(() => {
+  const { userStore } = useStores();
+  const getSideContent = (): JSX.Element => {
+    if (userStore.id) {
+      return (
+        <UserPanel>
+          <h4>{userStore.name}</h4>
+        </UserPanel>
+      );
+    }
+    return (
       <Menu>
         <NLink to="/login" role="nav-link" activeClassName="active">
           Login
@@ -56,6 +69,15 @@ export const Header: React.FC = () => {
           Register
         </NLink>
       </Menu>
+    );
+  };
+
+  return (
+    <TopBar>
+      <LogoText role="logo" to="/">
+        <Colored>J</Colored>ust<Colored>D</Colored>o<Colored>I</Colored>t
+      </LogoText>
+      {getSideContent()}
     </TopBar>
   );
-};
+});
