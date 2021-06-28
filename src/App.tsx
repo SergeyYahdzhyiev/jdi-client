@@ -6,11 +6,13 @@ export const App: React.FC = () => {
   return (
     <Router>
       <Header />
-      <Switch>
-        <Route exact path="/" component={Banner} />
-        <Route exact path="/login" component={LoginForm} />
-        <Route exact path="/register" component={RegisterForm} />
-      </Switch>
+      <main>
+        <Switch>
+          <Route exact path="/" component={Banner} />
+          <Route exact path="/login" component={LoginForm} />
+          <Route exact path="/register" component={RegisterForm} />
+        </Switch>
+      </main>
       <Footer />
     </Router>
   );

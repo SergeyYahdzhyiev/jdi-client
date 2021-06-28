@@ -8,6 +8,8 @@ const JdiFooter = styled.footer`
   flex-direction: column;
   align-items: center;
 
+  width: 100%;
+
   padding-top: 40px;
   padding-left: max(20px, 5vw);
   padding-right: max(20px, 5vw);

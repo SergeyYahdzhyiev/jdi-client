@@ -18,9 +18,10 @@ const TopBar = styled.header`
   box-shadow: var(--box-shadow-primary);
 `;
 const LogoText = styled(NavLink)`
-  font-size: max(32px, 3vw);
+  font-family: 'Big Shoulders Display', coursive;
+  font-size: max(42px, 3vw);
   margin: 0;
-  font-weight: 500;
+  font-weight: 300;
   color: var(--text-color-primary);
   text-decoration: none;
 `;
