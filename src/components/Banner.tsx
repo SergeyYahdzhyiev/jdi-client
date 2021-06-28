@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 const picture = require('../../public/assets/images/banner.jpg') as string;
+const pictureAvif = require('../../public/assets/images/banner.avif') as string;
+const pictureWebp = require('../../public/assets/images/banner.webp') as string;
 
 const Container = styled.section`
   display: flex;
@@ -121,6 +123,8 @@ export const Banner: React.FC = () => {
       </Col>
       <Col>
         <Picture>
+          <source srcSet={pictureAvif} type="image/avif" />
+          <source srcSet={pictureWebp} type="image/webp" />
           <Img src={picture} alt="banner-picture" />
         </Picture>
       </Col>

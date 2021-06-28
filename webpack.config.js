@@ -39,7 +39,7 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
-        test: /\.(svg|jpg)$/i,
+        test: /\.(svg|jpg|avif|webp)$/i,
         type: 'asset/resource',
         generator: {
           filename: 'public/icons/[name][ext]',
