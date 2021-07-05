@@ -48,13 +48,14 @@ const Heading = styled.h2`
 `;
 
 const Text = styled.p`
-  font-size: max(18px, 2vw);
+  font-size: max(18px, 1.5vw);
   text-align: center;
   color: var(--clr-text-secondary);
   line-height: 1.8;
 
   max-width: 25ch;
 
+  margin-top: 0.5em;
   margin-bottom: 2em;
 
   @media (min-width: 768px) {
@@ -87,7 +88,7 @@ const Button = styled(NavLink)`
 
   &:hover,
   &:focus {
-    box-shadow: 0 0 2px 2px var(--clr-text-highlight);
+    opacity: 0.8;
   }
 
   @media (min-width: 768px) {

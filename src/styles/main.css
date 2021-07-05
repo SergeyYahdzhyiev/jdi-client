@@ -23,6 +23,7 @@ body {
   min-height: 100vh;
 }
 
-a:focus {
+a:focus,
+input:focus {
   outline-color: var(--clr-text-highlight);
 }
