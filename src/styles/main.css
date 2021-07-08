@@ -23,7 +23,20 @@ body {
   min-height: 100vh;
 }
 
+main {
+  position: relative;
+}
+
 a:focus,
 input:focus {
   outline-color: var(--clr-text-highlight);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

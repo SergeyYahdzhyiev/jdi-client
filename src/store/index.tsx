@@ -1,15 +1,19 @@
 import React, { createContext, FC, ReactElement, ReactNode } from 'react';
+import { AlertStore } from './alert';
 import { UserStore } from './user';
 
 export interface RootStoreModel {
   userStore: UserStore;
+  alertStore: AlertStore;
 }
 
 export class RootStore implements RootStoreModel {
   userStore: UserStore;
+  alertStore: AlertStore;
 
   constructor() {
     this.userStore = new UserStore(this);
+    this.alertStore = new AlertStore(this);
   }
 }
 

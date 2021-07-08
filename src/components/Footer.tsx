@@ -10,10 +10,10 @@ const JdiFooter = styled.footer`
 
   width: 100%;
 
-  padding-top: 40px;
+  padding-top: 30px;
   padding-left: max(20px, 5vw);
   padding-right: max(20px, 5vw);
-  padding-bottom: 40px;
+  padding-bottom: 20px;
 
   color: var(--clr-text-secondary);
 
@@ -37,13 +37,13 @@ const Row = styled.div`
   margin: 1em 0;
 `;
 const SocialHeading = styled.h5`
-  font-size: max(18px, 1.5vw);
+  font-size: max(18px, 1.2vw);
   text-align: center;
   letter-spacing: 2px;
   margin: 0;
 `;
 const SocialLink = styled.a`
-  font-size: max(28px, 2.5vw);
+  font-size: max(28px, 2vw);
   margin: 0.2em;
   color: inherit;
   transition: color 0.3s ease;
@@ -53,7 +53,7 @@ const SocialLink = styled.a`
   }
 `;
 const Copyright = styled.span`
-  font-size: max(16px, 1.8vw);
+  font-size: max(16px, 1.5vw);
 `;
 
 export const Footer: React.FC = () => {

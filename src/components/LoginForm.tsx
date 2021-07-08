@@ -1,7 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
+
+import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+// import { useStores } from '../hooks/stores.hook';
 
 interface IFormState {
   email: string;
@@ -158,11 +161,13 @@ const Link = styled(NavLink)`
 //   }
 // `;
 
-export const LoginForm: React.FC = () => {
+export const LoginForm: React.FC = observer(() => {
   const [state, setState] = useState<IFormState>({
     email: '',
     password: '',
   });
+
+  // const { alertStore } = useStores();
 
   const changeHandler = (e) => {
     setState((prev) => ({
@@ -173,7 +178,6 @@ export const LoginForm: React.FC = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(state);
   };
   return (
     <Container>
@@ -196,4 +200,4 @@ export const LoginForm: React.FC = () => {
       </FormContainer>
     </Container>
   );
-};
+});

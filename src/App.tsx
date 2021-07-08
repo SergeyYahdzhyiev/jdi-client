@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Header, Footer, LoginForm, RegisterForm } from './components';
+import { Header, Footer, LoginForm, RegisterForm, Alert } from './components';
 
 export const App: React.FC = () => {
   return (
@@ -12,6 +12,7 @@ export const App: React.FC = () => {
           <Route exact path="/" component={LoginForm} />
           <Route exact path="/register" component={RegisterForm} />
         </Switch>
+        <Alert />
       </main>
       <Footer />
     </Router>

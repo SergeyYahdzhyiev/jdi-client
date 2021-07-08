@@ -25,13 +25,13 @@ export class UserStore implements IUserStore {
   constructor(rootStore?: RootStoreModel) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
+    console.log(this.rootStore);
   }
 
   @action setIdAndToken = (payload: PayloadRecord<keyof IUserStore, string>): void => {
     const { id, token } = payload;
     this.id = id;
     this.token = token;
-    console.log(this.rootStore);
   };
 
   @action setDetails = (payload: PayloadRecord<keyof IUserStore, string>): void => {
