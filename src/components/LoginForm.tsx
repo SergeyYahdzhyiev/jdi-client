@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-// import { useStores } from '../hooks/stores.hook';
+import { useStores } from '../hooks/stores.hook';
 
-interface IFormState {
+export interface ILoginFormState {
   email: string;
   password: string;
 }
@@ -87,6 +87,10 @@ const SubmitButton = styled.button`
   &:focus {
     opacity: 0.8;
   }
+
+  &:disabled {
+    filter: grayscale(100);
+  }
 `;
 
 const Link = styled(NavLink)`
@@ -103,71 +107,71 @@ const Link = styled(NavLink)`
   }
 `;
 
-// const Loader = styled.div`
-//   & {
-//     display: inline-block;
-//     position: relative;
-//     width: 80px;
-//     height: max(18px, 0.8vw);
-//   }
-//   & div {
-//     position: absolute;
-//     top: 6px;
-//     width: 13px;
-//     height: 13px;
-//     border-radius: 50%;
-//     background: #fff;
-//     animation-timing-function: cubic-bezier(0, 1, 1, 0);
-//   }
-//   & div:nth-child(1) {
-//     left: 8px;
-//     animation: lds-ellipsis1 0.6s infinite;
-//   }
-//   & div:nth-child(2) {
-//     left: 8px;
-//     animation: lds-ellipsis2 0.6s infinite;
-//   }
-//   & div:nth-child(3) {
-//     left: 32px;
-//     animation: lds-ellipsis2 0.6s infinite;
-//   }
-//   & div:nth-child(4) {
-//     left: 56px;
-//     animation: lds-ellipsis3 0.6s infinite;
-//   }
-//   @keyframes lds-ellipsis1 {
-//     0% {
-//       transform: scale(0);
-//     }
-//     100% {
-//       transform: scale(1);
-//     }
-//   }
-//   @keyframes lds-ellipsis3 {
-//     0% {
-//       transform: scale(1);
-//     }
-//     100% {
-//       transform: scale(0);
-//     }
-//   }
-//   @keyframes lds-ellipsis2 {
-//     0% {
-//       transform: translate(0, 0);
-//     }
-//     100% {
-//       transform: translate(24px, 0);
-//     }
-//   }
-// `;
+const Loader = styled.div`
+  & {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: max(18px, 0.8vw);
+  }
+  & div {
+    position: absolute;
+    top: 6px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #fff;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  & div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  & div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  & div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  & div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
+`;
 
 export const LoginForm: React.FC = observer(() => {
-  const [state, setState] = useState<IFormState>({
+  const [state, setState] = useState<ILoginFormState>({
     email: '',
     password: '',
   });
 
-  // const { alertStore } = useStores();
+  const { authStore } = useStores();
 
   const changeHandler = (e) => {
     setState((prev) => ({
@@ -178,23 +182,27 @@ export const LoginForm: React.FC = observer(() => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    authStore.login(state);
   };
   return (
     <Container>
       <FormContainer onSubmit={submitHandler}>
-        <Fieldset>
+        <Fieldset disabled={authStore.isFetching}>
           <Label htmlFor="email">Email:</Label>
           <Input name="email" type="email" required value={state.email} onChange={changeHandler} />
           <Label htmlFor="password">Password:</Label>
           <Input name="password" type="password" required value={state.password} onChange={changeHandler} />
         </Fieldset>
-        <SubmitButton type="submit">
-          Login
-          {/* <Loader>
-            <div></div>
-            <div></div>
-            <div></div>
-          </Loader> */}
+        <SubmitButton type="submit" disabled={authStore.isFetching}>
+          {!authStore.isFetching ? (
+            'Login'
+          ) : (
+            <Loader>
+              <div></div>
+              <div></div>
+              <div></div>
+            </Loader>
+          )}
         </SubmitButton>
         <Link to="/register">Register</Link>
       </FormContainer>

@@ -20,12 +20,12 @@ export class AlertStore implements IAlertStore {
     console.log(this.rootStore);
   }
 
-  @action showAlert(message: string): void {
+  @action showAlert = (message: string): void => {
     this.isShowing = true;
     this.message = message;
-  }
+  };
 
-  @action hideAlert(): void {
+  @action hideAlert = (): void => {
     this.isShowing = false;
-  }
+  };
 }

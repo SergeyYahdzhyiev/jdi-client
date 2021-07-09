@@ -1,7 +1,7 @@
 import { action, makeAutoObservable, observable } from 'mobx';
 import { RootStoreModel } from '.';
 
-type PayloadRecord<K extends keyof IUserStore, T> = Partial<Record<K, T>>;
+export type PayloadRecord<K extends keyof IUserStore, T> = Partial<Record<K, T>>;
 
 export interface IUserStore {
   id: string | null;
