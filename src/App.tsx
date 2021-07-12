@@ -9,8 +9,8 @@ export const App: React.FC = () => {
       <main>
         <Switch>
           {/* <Route exact path="/" component={Banner} /> */}
-          <Route exact path="/" component={LoginForm} />
-          <Route exact path="/register" component={RegisterForm} />
+          <Route exact path="/login" component={LoginForm} />
+          <Route exact path="/" component={RegisterForm} />
         </Switch>
         <Alert />
       </main>

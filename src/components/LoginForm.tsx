@@ -189,9 +189,23 @@ export const LoginForm: React.FC = observer(() => {
       <FormContainer onSubmit={submitHandler}>
         <Fieldset disabled={authStore.isFetching}>
           <Label htmlFor="email">Email:</Label>
-          <Input name="email" type="email" required value={state.email} onChange={changeHandler} />
+          <Input
+            name="email"
+            type="email"
+            required
+            value={state.email}
+            onChange={changeHandler}
+            placeholder="Enter email..."
+          />
           <Label htmlFor="password">Password:</Label>
-          <Input name="password" type="password" required value={state.password} onChange={changeHandler} />
+          <Input
+            name="password"
+            type="password"
+            required
+            value={state.password}
+            onChange={changeHandler}
+            placeholder="Enter password..."
+          />
         </Fieldset>
         <SubmitButton type="submit" disabled={authStore.isFetching}>
           {!authStore.isFetching ? (
