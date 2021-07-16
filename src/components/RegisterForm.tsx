@@ -1,12 +1,13 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { AvatarUploader } from './AvatarUploader';
+import { useStores } from '../hooks/stores.hook';
+import { observer } from 'mobx-react-lite';
 
 export interface IRegisterFormState {
   email: string;
-  username: string;
+  userName: string;
   password: string;
   cpassword: string;
   avatar: string;
@@ -82,6 +83,10 @@ const Input = styled.input`
   border-radius: 5px;
 
   padding: 0.5em 1em;
+
+  &.error {
+    outline-color: red;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -123,16 +128,23 @@ const Link = styled(NavLink)`
   }
 `;
 
-export const RegisterForm: React.FC = () => {
+export const RegisterForm: React.FC = observer(() => {
   const [state, setState] = useState<IRegisterFormState>({
     email: '',
-    username: '',
+    userName: '',
     password: '',
     cpassword: '',
     avatar: '',
   });
 
+  const history = useHistory();
+
+  const cpasswordRef = useRef<HTMLInputElement>(null);
+
+  const { alertStore, authStore } = useStores();
+
   const changeHandler = (e) => {
+    e.target.classList.remove('error');
     setState((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -141,12 +153,23 @@ export const RegisterForm: React.FC = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (state.password !== state.cpassword) {
+      alertStore.showAlert('Passwords do not match!');
+      cpasswordRef.current.classList.add('error');
+      cpasswordRef.current.focus();
+    } else {
+      authStore.register(state);
+      if (!authStore.error) {
+        setTimeout(() => history.push('/'), 500);
+      }
+    }
+    console.log(state);
   };
 
   return (
     <Container>
       <FormContainer onSubmit={submitHandler}>
-        <Fieldset>
+        <Fieldset disabled={authStore.isFetching}>
           <Col>
             <Label htmlFor="email">Email:</Label>
             <Input
@@ -173,26 +196,33 @@ export const RegisterForm: React.FC = () => {
               value={state.cpassword}
               onChange={changeHandler}
               placeholder="Enter passsword..."
+              ref={cpasswordRef}
               required
             />
           </Col>
           <Col>
-            <Label htmlFor="username">Username:</Label>
+            <Label htmlFor="userName">Username:</Label>
             <Input
               type="text"
-              name="username"
-              value={state.username}
+              name="userName"
+              value={state.userName}
               onChange={changeHandler}
               placeholder="Enter username..."
               required
             />
             <Label htmlFor="avatar">Avatar:</Label>
-            <AvatarUploader inputName="avatar" size={100} />
+            <AvatarUploader
+              inputName="avatar"
+              size={100}
+              onCrop={(avatarUrl) => setState((prev) => ({ ...prev, avatar: avatarUrl }))}
+            />
           </Col>
         </Fieldset>
-        <SubmitButton type="submit">Register</SubmitButton>
+        <SubmitButton type="submit" disabled={authStore.isFetching}>
+          Register
+        </SubmitButton>
         <Link to="/login">Back To Login</Link>
       </FormContainer>
     </Container>
   );
-};
+});

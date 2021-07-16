@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStores } from '../hooks/stores.hook';
@@ -53,7 +54,7 @@ const UserPanel = styled.div`
 
 export const Header: React.FC = observer(() => {
   const { userStore } = useStores();
-  const getSideContent = (): JSX.Element => {
+  const getSideContent = useCallback((): JSX.Element => {
     if (userStore.id) {
       return (
         <UserPanel>
@@ -71,7 +72,7 @@ export const Header: React.FC = observer(() => {
         </NLink>
       </Menu>
     );
-  };
+  }, [userStore.id, userStore.name]);
 
   return (
     <TopBar>

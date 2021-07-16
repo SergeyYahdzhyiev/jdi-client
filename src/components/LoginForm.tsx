@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useStores } from '../hooks/stores.hook';
 
 export interface ILoginFormState {
@@ -171,7 +171,9 @@ export const LoginForm: React.FC = observer(() => {
     password: '',
   });
 
-  const { authStore } = useStores();
+  const history = useHistory();
+
+  const { authStore, userStore } = useStores();
 
   const changeHandler = (e) => {
     setState((prev) => ({
@@ -183,6 +185,10 @@ export const LoginForm: React.FC = observer(() => {
   const submitHandler = (e) => {
     e.preventDefault();
     authStore.login(state);
+    console.log(userStore);
+    if (!authStore.error) {
+      setTimeout(() => history.push('/'), 500);
+    }
   };
   return (
     <Container>
