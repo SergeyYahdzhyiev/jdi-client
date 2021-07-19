@@ -13,8 +13,8 @@ export interface IAuthStore {
 
 export class AuthStore implements IAuthStore {
   private rootStore: RootStoreModel | undefined;
-  // private apiUrl = 'https://jdi-api.herokuapp.com';
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'https://jdi-api.herokuapp.com';
+  // private apiUrl = 'http://localhost:3000';
 
   @observable isFetching: boolean;
   @observable error: boolean;
@@ -47,6 +47,7 @@ export class AuthStore implements IAuthStore {
         this.setError(true);
         this.rootStore.alertStore.showAlert(resData.error);
       } else {
+        this.setError(false);
         this.rootStore.userStore.setIdAndToken(resData);
       }
 
@@ -71,6 +72,7 @@ export class AuthStore implements IAuthStore {
         this.setError(true);
         this.rootStore.alertStore.showAlert(resData.error);
       } else {
+        this.setError(false);
         this.rootStore.alertStore.showAlert(resData.message);
       }
 

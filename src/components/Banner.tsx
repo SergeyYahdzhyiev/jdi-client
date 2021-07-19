@@ -114,8 +114,8 @@ export const Banner: React.FC = () => {
       <Col>
         <Heading>One Todo App to rule them all!</Heading>
         <Text>
-          Welcome to my portfolio project of a simple todo app. I developed both front and back end of it using: React,
-          Typescript, Node, Express and MongoDB.
+          Welcome to my portfolio project of a simple todo app. I developed both front and back end of it using: React
+          (Mobx, Styled Components), Typescript, Node, Express and MongoDB.
         </Text>
         <Buttons>
           <Button to="/login">Login</Button>

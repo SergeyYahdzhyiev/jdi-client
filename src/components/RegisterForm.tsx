@@ -67,13 +67,33 @@ const Col = styled.div`
 `;
 
 const Label = styled.label`
+  position: relative;
   font-size: max(18px, 1.5vw);
   width: 100%;
   margin-bottom: 0.5em;
-  margin-top: 1em;
+  margin-top: 1.5em;
+
+  &[for='password']::after {
+    content: 'Minimum 8 characters, 1 capital, 1 number';
+    position: absolute;
+    display: block;
+    left: 0;
+    top: calc(100% + 50px);
+    opacity: 0.5;
+    font-size: 10px;
+    line-height: 1.5;
+    padding-left: 5px;
+  }
+
+  &.error {
+    &[for='password']::after {
+      color: red;
+    }
+  }
 `;
 
 const Input = styled.input`
+  position: relative;
   font-size: max(16px, 1vw);
   width: 100%;
 
@@ -128,6 +148,64 @@ const Link = styled(NavLink)`
   }
 `;
 
+const Loader = styled.div`
+  & {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: max(18px, 0.8vw);
+  }
+  & div {
+    position: absolute;
+    top: 6px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #fff;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  & div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  & div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  & div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  & div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
+`;
+
 export const RegisterForm: React.FC = observer(() => {
   const [state, setState] = useState<IRegisterFormState>({
     email: '',
@@ -139,31 +217,50 @@ export const RegisterForm: React.FC = observer(() => {
 
   const history = useHistory();
 
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordLabelRef = useRef<HTMLLabelElement>(null);
   const cpasswordRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   const { alertStore, authStore } = useStores();
 
+  const highlightInvalidInput = (message) => {
+    const highlight = (target: HTMLInputElement) => {
+      target.classList.add('error');
+      target.focus();
+    };
+    if (/email/.test(message)) highlight(emailRef.current);
+    if (/username/.test(message)) highlight(nameRef.current);
+    if (/password/.test(message)) {
+      highlight(passwordRef.current);
+      passwordLabelRef.current.classList.add('error');
+    }
+  };
+
   const changeHandler = (e) => {
     e.target.classList.remove('error');
+    if (e.target === passwordRef.current) passwordLabelRef.current.classList.remove('error');
     setState((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (state.password !== state.cpassword) {
       alertStore.showAlert('Passwords do not match!');
       cpasswordRef.current.classList.add('error');
       cpasswordRef.current.focus();
     } else {
-      authStore.register(state);
+      await authStore.register(state);
       if (!authStore.error) {
         setTimeout(() => history.push('/'), 500);
+      } else {
+        highlightInvalidInput(alertStore.message);
       }
     }
-    console.log(state);
   };
 
   return (
@@ -178,15 +275,19 @@ export const RegisterForm: React.FC = observer(() => {
               value={state.email}
               onChange={changeHandler}
               placeholder="Enter email..."
+              ref={emailRef}
               required
             />
-            <Label htmlFor="password">Password:</Label>
+            <Label htmlFor="password" ref={passwordLabelRef}>
+              Password:
+            </Label>
             <Input
               type="password"
               name="password"
               value={state.password}
               onChange={changeHandler}
               placeholder="Enter password..."
+              ref={passwordRef}
               required
             />
             <Label htmlFor="cpassword">Confirm Password:</Label>
@@ -208,6 +309,7 @@ export const RegisterForm: React.FC = observer(() => {
               value={state.userName}
               onChange={changeHandler}
               placeholder="Enter username..."
+              ref={nameRef}
               required
             />
             <Label htmlFor="avatar">Avatar:</Label>
@@ -219,7 +321,15 @@ export const RegisterForm: React.FC = observer(() => {
           </Col>
         </Fieldset>
         <SubmitButton type="submit" disabled={authStore.isFetching}>
-          Register
+          {authStore.isFetching ? (
+            <Loader>
+              <div></div>
+              <div></div>
+              <div></div>
+            </Loader>
+          ) : (
+            'Register'
+          )}
         </SubmitButton>
         <Link to="/login">Back To Login</Link>
       </FormContainer>

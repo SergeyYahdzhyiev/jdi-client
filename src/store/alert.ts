@@ -23,6 +23,8 @@ export class AlertStore implements IAlertStore {
   @action showAlert = (message: string): void => {
     this.isShowing = true;
     this.message = message;
+
+    setTimeout(() => this.hideAlert(), 3000);
   };
 
   @action hideAlert = (): void => {

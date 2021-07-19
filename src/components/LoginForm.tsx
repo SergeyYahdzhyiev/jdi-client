@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 
 import { observer } from 'mobx-react-lite';
@@ -67,6 +67,10 @@ const Input = styled.input`
   border-radius: 5px;
 
   padding: 0.5em 1em;
+
+  &.error {
+    outline-color: red;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -171,23 +175,37 @@ export const LoginForm: React.FC = observer(() => {
     password: '',
   });
 
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
   const history = useHistory();
 
-  const { authStore, userStore } = useStores();
+  const { authStore, alertStore } = useStores();
+
+  const highlightInvalidInput = (message) => {
+    const highlight = (target: HTMLInputElement) => {
+      target.classList.add('error');
+      target.focus();
+    };
+    if (/email/.test(message)) highlight(emailRef.current);
+    if (/password/.test(message)) highlight(passwordRef.current);
+  };
 
   const changeHandler = (e) => {
+    e.target.classList.remove('error');
     setState((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    authStore.login(state);
-    console.log(userStore);
+    await authStore.login(state);
     if (!authStore.error) {
       setTimeout(() => history.push('/'), 500);
+    } else {
+      highlightInvalidInput(alertStore.message);
     }
   };
   return (
@@ -202,6 +220,7 @@ export const LoginForm: React.FC = observer(() => {
             value={state.email}
             onChange={changeHandler}
             placeholder="Enter email..."
+            ref={emailRef}
           />
           <Label htmlFor="password">Password:</Label>
           <Input
@@ -211,6 +230,7 @@ export const LoginForm: React.FC = observer(() => {
             value={state.password}
             onChange={changeHandler}
             placeholder="Enter password..."
+            ref={passwordRef}
           />
         </Fieldset>
         <SubmitButton type="submit" disabled={authStore.isFetching}>
