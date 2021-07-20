@@ -115,23 +115,89 @@ const UserAvatar = styled.div`
     object-fit: cover;
   }
 `;
-
+const Loader = styled.div`
+  & {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: max(18px, 0.8vw);
+  }
+  & div {
+    position: absolute;
+    top: 0;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--clr-text-highlight);
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  & div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  & div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  & div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  & div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
+`;
 export const Header: React.FC = observer(() => {
   const { userStore } = useStores();
   const getSideContent = useCallback((): JSX.Element => {
-    if (userStore.id) {
+    if (userStore.token) {
       return (
         <UserPanel>
-          <UserInfo>
-            <UserName>{userStore.name}</UserName>
-            <UserEmail>{userStore.email}</UserEmail>
-            <LogoutLink to="/" onClick={() => userStore.unsetUser()}>
-              Log Out
-            </LogoutLink>
-          </UserInfo>
-          <UserAvatar>
-            <img src={userStore.avatar} alt="avatar" />
-          </UserAvatar>
+          {!userStore.avatar || userStore.isLoading ? (
+            <Loader>
+              <div></div>
+              <div></div>
+              <div></div>
+            </Loader>
+          ) : (
+            <>
+              <UserInfo>
+                <UserName>{userStore.name}</UserName>
+                <UserEmail>{userStore.email}</UserEmail>
+                <LogoutLink to="/" onClick={() => userStore.unsetUser()}>
+                  Log Out
+                </LogoutLink>
+              </UserInfo>
+              <UserAvatar>
+                <img src={userStore.avatar} alt="avatar" />
+              </UserAvatar>
+            </>
+          )}
         </UserPanel>
       );
     }
@@ -145,7 +211,7 @@ export const Header: React.FC = observer(() => {
         </NLink>
       </Menu>
     );
-  }, [userStore.id, userStore.name]);
+  }, [userStore.token]);
 
   useEffect(() => {
     if (userStore.token) {
