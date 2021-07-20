@@ -4,17 +4,21 @@ import { AuthStore } from './auth';
 import { UserStore } from './user';
 
 export interface RootStoreModel {
+  apiUrl: string;
   userStore: UserStore;
   alertStore: AlertStore;
   authStore: AuthStore;
 }
 
 export class RootStore implements RootStoreModel {
+  apiUrl: string;
   userStore: UserStore;
   alertStore: AlertStore;
   authStore: AuthStore;
 
   constructor() {
+    this.apiUrl = 'https://jdi-api.herokuapp.com';
+
     this.userStore = new UserStore(this);
     this.alertStore = new AlertStore(this);
     this.authStore = new AuthStore(this);

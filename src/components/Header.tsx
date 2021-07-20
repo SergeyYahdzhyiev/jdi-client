@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
-import { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStores } from '../hooks/stores.hook';
@@ -50,6 +49,71 @@ const NLink = styled(NavLink)`
 const UserPanel = styled.div`
   display: flex;
   align-itemd: center;
+
+  max-height: 100%;
+`;
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  align-items: flex-end;
+
+  max-height: 100%;
+`;
+const UserName = styled.h4`
+  margin: 0;
+  font-size: 14px;
+
+  @media screen and (min-width: 768px) {
+    font-size: 16px;
+  }
+`;
+const UserEmail = styled.p`
+  margin: 0;
+  font-size: 10px;
+
+  @media screen and (min-width: 768px) {
+    font-size: 12px;
+  }
+`;
+const LogoutLink = styled(NavLink)`
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--clr-text-highlight);
+  text-decoration: none;
+
+  @media screen and (min-width: 768px) {
+    font-size: 14px;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+const UserAvatar = styled.div`
+  position: relative;
+  width: 50px;
+  height: 50px;
+
+  margin-left: 1rem;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    object-fit: cover;
+  }
 `;
 
 export const Header: React.FC = observer(() => {
@@ -58,7 +122,16 @@ export const Header: React.FC = observer(() => {
     if (userStore.id) {
       return (
         <UserPanel>
-          <h4>{userStore.name}</h4>
+          <UserInfo>
+            <UserName>{userStore.name}</UserName>
+            <UserEmail>{userStore.email}</UserEmail>
+            <LogoutLink to="/" onClick={() => userStore.unsetUser()}>
+              Log Out
+            </LogoutLink>
+          </UserInfo>
+          <UserAvatar>
+            <img src={userStore.avatar} alt="avatar" />
+          </UserAvatar>
         </UserPanel>
       );
     }
@@ -73,6 +146,12 @@ export const Header: React.FC = observer(() => {
       </Menu>
     );
   }, [userStore.id, userStore.name]);
+
+  useEffect(() => {
+    if (userStore.token) {
+      userStore.setDetails();
+    }
+  }, [userStore.token]);
 
   return (
     <TopBar>

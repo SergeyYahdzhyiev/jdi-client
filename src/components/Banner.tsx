@@ -36,7 +36,7 @@ const Col = styled.div`
 `;
 const Heading = styled.h2`
   font-family: 'Big Shoulders Display', coursive;
-  font-size: max(38px, 6vw);
+  font-size: max(38px, 5vw);
   font-weight: 900;
   text-align: center;
 
@@ -76,7 +76,7 @@ const Buttons = styled.div`
 `;
 const Button = styled(NavLink)`
   font-family: 'Lato', sasn-serif;
-  font-size: max(24px, 2vw);
+  font-size: max(18px, 1.5vw);
   font-weight: 500;
   background: var(--clr-text-highlight);
   color: #fff;

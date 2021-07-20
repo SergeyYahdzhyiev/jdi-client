@@ -13,8 +13,6 @@ export interface IAuthStore {
 
 export class AuthStore implements IAuthStore {
   private rootStore: RootStoreModel | undefined;
-  private apiUrl = 'https://jdi-api.herokuapp.com';
-  // private apiUrl = 'http://localhost:3000';
 
   @observable isFetching: boolean;
   @observable error: boolean;
@@ -36,7 +34,7 @@ export class AuthStore implements IAuthStore {
   @action login = async (data: ILoginFormState): Promise<void> => {
     try {
       this.setFetching(true);
-      const res = await fetch(this.apiUrl + '/auth/login', {
+      const res = await fetch(this.rootStore.apiUrl + '/auth/login', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
@@ -48,7 +46,7 @@ export class AuthStore implements IAuthStore {
         this.rootStore.alertStore.showAlert(resData.error);
       } else {
         this.setError(false);
-        this.rootStore.userStore.setIdAndToken(resData);
+        this.rootStore.userStore.setIdAndToken(resData.token);
       }
 
       this.setFetching(false);
@@ -61,7 +59,7 @@ export class AuthStore implements IAuthStore {
   @action register = async (data: IRegisterFormState): Promise<void> => {
     try {
       this.setFetching(true);
-      const res = await fetch(this.apiUrl + '/auth/register', {
+      const res = await fetch(this.rootStore.apiUrl + '/auth/register', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
