@@ -10,7 +10,11 @@ export const App: React.FC = observer(() => {
 
   const getRoutes = useCallback(() => {
     if (userStore.token) {
-      return <Route path="/" component={Main} />;
+      return (
+        <>
+          <Route exact path="/" component={Main} />
+        </>
+      );
     }
     return (
       <>
