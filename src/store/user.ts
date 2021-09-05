@@ -16,7 +16,6 @@ export interface IUserStore {
   avatar: string | null;
   isLoading: boolean;
 
-  setLoading: (value: boolean) => void;
   setIdAndToken: (token: string) => void;
   setDetails: () => Promise<void>;
   unsetUser: () => void;
@@ -36,52 +35,66 @@ export class UserStore implements IUserStore {
   constructor(rootStore?: RootStoreModel) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
-    console.log(this.rootStore);
 
     if (this.token) this.setIdAndToken(this.token);
     if (this.isExpired) this.unsetUser();
   }
 
-  @action setLoading = (value: boolean): void => {
+  set loading(value: boolean) {
     this.isLoading = value;
-  };
+  }
 
   @action setIdAndToken = (token: string): void => {
     const { userId, exp } = jwtDecode<ITokenDecoded>(token);
     document.cookie = `jdiToken=${token};max-age=${24 * 3600}`;
-    this.token = token;
-    this.id = userId;
+    this._token = token;
+    this._id = userId;
     this.tokenExpiration = exp;
   };
 
   @action setDetails = async (): Promise<void> => {
-    this.setLoading(true);
+    this.loading = true;
     try {
       const res = await fetch(this.rootStore.apiUrl + '/users/', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + this.token },
       });
       const { name, email, avatar } = await res.json();
-      this.name = name;
-      this.email = email;
-      this.avatar = avatar;
-      this.setLoading(false);
+      this._name = name;
+      this._email = email;
+      this._avatar = avatar;
+      this.loading = false;
     } catch (e) {
-      this.setLoading(false);
+      this.loading = false;
       console.error(e);
     }
   };
 
   @action unsetUser = (): void => {
     document.cookie = `jdiToken=${this.token};max-age=0`;
-    this.id = null;
-    this.name = null;
-    this.email = null;
-    this.token = null;
-    this.avatar = null;
+    this._id = null;
+    this._name = null;
+    this._email = null;
+    this._token = null;
+    this._avatar = null;
   };
 
   get isExpired(): boolean {
     return this.tokenExpiration * 1000 < Date.now();
+  }
+  set _id(value: string) {
+    this.id = value;
+  }
+  set _name(value: string) {
+    this.name = value;
+  }
+  set _email(value: string) {
+    this.email = value;
+  }
+  set _token(value: string) {
+    this.token = value;
+  }
+  set _avatar(value: string) {
+    this.avatar = value;
   }
 }

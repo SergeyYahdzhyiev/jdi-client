@@ -20,7 +20,7 @@ export class RootStore implements RootStoreModel {
     this.apiUrl = 'https://jdi-api.herokuapp.com';
 
     this.userStore = new UserStore(this);
-    this.alertStore = new AlertStore(this);
+    this.alertStore = new AlertStore();
     this.authStore = new AuthStore(this);
   }
 }

@@ -1,5 +1,4 @@
 import { action, makeAutoObservable, observable } from 'mobx';
-import { RootStoreModel } from '.';
 
 export interface IAlertStore {
   isShowing: boolean;
@@ -9,15 +8,11 @@ export interface IAlertStore {
   hideAlert: () => void;
 }
 export class AlertStore implements IAlertStore {
-  private rootStore: RootStoreModel | undefined;
-
   @observable isShowing = false;
   @observable message = 'Default Alert Message!';
 
-  constructor(rootStore?: RootStoreModel) {
-    this.rootStore = rootStore;
+  constructor() {
     makeAutoObservable(this);
-    console.log(this.rootStore);
   }
 
   @action showAlert = (message: string): void => {
