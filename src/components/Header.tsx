@@ -19,7 +19,7 @@ const TopBar = styled.header`
 `;
 const LogoText = styled(NavLink)`
   font-family: 'Big Shoulders Display', coursive;
-  font-size: max(42px, 3vw);
+  font-size: max(38px, 3vw);
   margin: 0;
   font-weight: 300;
   color: var(--text-color-primary);
