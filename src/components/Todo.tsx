@@ -1,4 +1,4 @@
-import React, { useState, useRef, MouseEventHandler } from 'react';
+import React, { useState, useRef, MouseEventHandler, useEffect } from 'react';
 import { FaEdit, FaSave, FaTrashAlt } from 'react-icons/fa';
 import styled from 'styled-components';
 import { StatusKnob } from './StatusKnob';
@@ -72,7 +72,7 @@ const IconButton = styled.button`
 
   &.edit,
   &.save {
-    @media screen and (min-width: 568px) {
+    @media screen and (min-width: 700px) {
       display: none;
     }
   }
@@ -97,15 +97,6 @@ const IconButton = styled.button`
     display: block;
   }
 `;
-const Backdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  z-index: 0;
-`;
 
 export const Todo: React.FC<ITodoProps> = ({ title, body }: ITodoProps) => {
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -115,26 +106,39 @@ export const Todo: React.FC<ITodoProps> = ({ title, body }: ITodoProps) => {
   const afterRef = useRef<HTMLDivElement>(null);
   const removeRef = useRef<HTMLButtonElement>(null);
   const knobRef = useRef<HTMLDivElement>(null);
-  const backdropRef = useRef<HTMLDivElement>(null);
 
   const handleClick: MouseEventHandler = (e) => {
-    if (e.target === backdropRef.current) return setOpen(false);
     if (
       e.target !== knobRef.current &&
-      e.target !== removeRef.current &&
       !Array.from(knobRef.current.querySelectorAll('*')).includes(e.target as Element)
     )
-      setOpen(true);
+      setOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (
+        e.target !== containerRef.current &&
+        !Array.from(containerRef.current.querySelectorAll('*')).includes(e.target as Element)
+      )
+        setOpen(false);
+    };
+    if (isOpen) {
+      document.body.addEventListener('click', handler);
+    } else {
+      document.body.removeEventListener('click', handler);
+    }
+  }, [isOpen]);
 
   return (
     <Container
       className={isOpen ? 'selected' : null}
       onClick={handleClick}
       ref={containerRef}
-      style={{ height: isOpen ? `calc(50px + ${afterRef.current.offsetHeight}px)` : '50px' }}
+      style={{
+        height: isOpen && window.outerWidth <= 700 ? `calc(50px + ${afterRef.current.offsetHeight}px)` : '50px',
+      }}
     >
-      {isOpen && <Backdrop ref={backdropRef} />}
       <Content>
         <TitleContainer>
           <StatusKnob status="todo" ref={knobRef} />
@@ -145,7 +149,8 @@ export const Todo: React.FC<ITodoProps> = ({ title, body }: ITodoProps) => {
           {isOpen && !isEditing && (
             <IconButton
               className="edit"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setEdit(true);
               }}
             >
@@ -155,7 +160,8 @@ export const Todo: React.FC<ITodoProps> = ({ title, body }: ITodoProps) => {
           {isOpen && isEditing && (
             <IconButton
               className="save"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setEdit(false);
               }}
             >
@@ -167,7 +173,10 @@ export const Todo: React.FC<ITodoProps> = ({ title, body }: ITodoProps) => {
           </IconButton>
         </Buttons>
       </Content>
-      <AfterContent ref={afterRef} style={{ visibility: isOpen ? 'visible' : 'hidden', opacity: isOpen ? '1' : '0' }}>
+      <AfterContent
+        ref={afterRef}
+        style={{ visibility: isOpen && window.outerWidth <= 700 ? 'visible' : 'hidden', opacity: isOpen ? '1' : '0' }}
+      >
         {body}
       </AfterContent>
     </Container>

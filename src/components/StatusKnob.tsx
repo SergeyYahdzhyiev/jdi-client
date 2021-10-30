@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useRef } from 'react';
+import React, { forwardRef, useState, MutableRefObject, useRef } from 'react';
 import styled from 'styled-components';
 
 interface IStatusKnobProps {
@@ -64,16 +64,6 @@ const Item = styled.div`
   }
 `;
 
-const Backdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  z-index: 0;
-`;
-
 const colors = {
   todo: 'orange',
   progress: 'red',
@@ -92,23 +82,36 @@ const texts = {
 export const StatusKnob = forwardRef<HTMLDivElement, IStatusKnobProps>(({ status }: IStatusKnobProps, ref) => {
   const [isOpen, setOpen] = useState<boolean>(false);
 
-  const backdropRef = useRef(null);
+  const myRef = useRef(null);
 
   const handleClick = (e) => {
-    if (e.target === backdropRef.current) return setOpen(false);
+    e.stopPropagation();
+    if (window.outerWidth >= 568) return false;
+    if (e.target !== myRef.current && !Array.from(myRef.current.querySelectorAll('*')).includes(e.target))
+      return setOpen(false);
     setOpen((prev) => !prev);
   };
 
-  const handleClose = () => {
+  const handleClose = (e) => {
+    e.stopPropagation();
     setOpen(false);
   };
   return (
     <>
-      <Knob color={colors[status]} onClick={handleClick} ref={ref}>
+      <Knob
+        color={colors[status]}
+        onClick={handleClick}
+        ref={(node) => {
+          myRef.current = node;
+          if (typeof ref === 'function') {
+            ref(node);
+          } else if (ref) {
+            (ref as MutableRefObject<HTMLDivElement>).current = node;
+          }
+        }}
+      >
         {isOpen && (
           <>
-            {' '}
-            <Backdrop ref={backdropRef} />
             <Dropdown>
               {Object.keys(colors).map((key) => (
                 <DropdownItem key={key} objectKey={key} onChoose={() => handleClose} />

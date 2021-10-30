@@ -9,7 +9,7 @@ const ListContainer = styled.div`
   overflow-y: scroll;
   margin: 0 auto;
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 700px) {
     margin: unset;
   }
 `;
